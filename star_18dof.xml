@@ -1,0 +1,199 @@
+<mujoco model="humanoid_3D">
+  <compiler inertiafromgeom='auto' angle='degree' eulerseq='xyz'/>
+  <option gravity='0 0 -10' iterations='50' integrator="RK4" solver='Newton' timestep='0.001'/>   
+  <asset>
+    <texture name="body" type="cube" builtin="flat" mark="cross" width="127" height="1278"
+             rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+    <material name="body" texture="body" texuniform="true" rgba="0.8 0.3 .6 1"/>
+  </asset>
+
+  <default>
+    <geom density="1700"/>
+    <motor ctrlrange="-200 200" ctrllimited="true"/>
+    <default class="body">
+      <geom type="capsule" condim="1" friction=".8" solimp=".9 .99 .003" solref=".015 1" material="body"/>
+      <joint type="hinge" damping=".2" armature=".01" limited="true" solimplimit="0 .99 .01"/>
+      <default class="big_joint">
+        <joint damping="5" stiffness="10"/>
+        <default class="big_stiff_joint">
+          <joint stiffness="20"/>
+        </default>
+      </default>
+
+       <default class="shoulder">
+        <joint range="-85 60"/>
+      </default>
+      <default class="elbow">
+        <joint range="-100 50" stiffness="0"/>
+      </default>
+
+      <default class="arm_class">
+      <geom density="1700"/>
+       <default class="arm_upper">
+        <geom size=".04"/>
+      </default>
+      <default class="arm_lower">
+        <geom size=".031"/>
+      </default>
+      <default class="hand">
+        <geom type="sphere" size=".04"/>
+      </default>
+      </default>
+
+      <default class="torso_density1">
+        <geom density="3000"/>
+      </default>
+      <default class="torso_density2">
+        <geom density="3000"/>
+      </default>
+      <default class="torso_density3">
+        <geom density="2000"/>
+      </default>
+      <default class="pelvis_density">
+        <geom density="3700"/>
+      </default>
+      <default class="leg_density">
+        <geom density="1700"/>
+      </default>
+    </default>
+  </default>
+
+  <visual>
+    <map force="0.1" zfar="30"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <quality shadowsize="4096"/>
+    <global offwidth="800" offheight="800"/>
+  </visual>
+
+  <worldbody>
+    <light name="spotlight" mode="targetbodycom" target="torso"
+           diffuse=".8 .8 .8" specular="0.3 0.3 0.3" pos="0 -20 4" cutoff="10"/>
+    <body name="torso" pos="0 0 1.265" childclass="body">
+      <light name="top" pos="0 0 2" mode="trackcom"/>
+      <camera name="back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
+      <camera name="side" pos="0 -5 0.5" xyaxes="1 0 0 0 1 3" mode="trackcom"/>
+
+      <joint type="free" limited='false'/>
+
+      <geom name="torso" class="torso_density1" fromto="0 -.07 0 0 .07 0" size=".07" />
+      <geom name="upper_waist" class="torso_density2" fromto="-.01 -.06 -.12 -.01 .06 -.12" size=".06"/>
+      <body name="head" pos="0 0 .19">
+        <geom name="head" type="sphere" size=".09"/>
+        <camera name="egocentric" pos=".09 0 0" xyaxes="0 -1 0 .1 0 1" fovy="80"/>
+      </body>
+      <body name="lower_waist" pos="-.01 0 -.26">
+        <geom name="lower_waist" class="torso_density3" fromto="0 -.06 0 0 .06 0" size=".06"/>
+        <body name="pelvis" pos="0 0 -.165">
+        <!-- <inertial pos="0 0 0" mass="24.227" diaginertia="0.825 0.68 0.27"/> -->
+        <geom name="butt" class="pelvis_density" fromto="-.04 -.07 0 -.04 .07 0" size=".09"/>
+          
+          
+          <body name="right_thigh" pos="0 -.1 -.04">
+
+
+            <joint type='hinge' name="right_hip_yaw" axis="0 0 1" range="-50 20" limited='true' damping='1.000000'/>
+            <joint type='hinge' name="right_hip_roll" axis="1 0 0" range="-20 8" limited='true' damping='1.000000'/>
+            <joint type='hinge' name="right_hip_pitch" axis="0 1 0" range="-30 40" limited='true' damping='1.000000'/>
+            
+            <site name='right_thigh' size='0.01' pos='0 0 -0.0' euler='0 0 0' rgba ='0 1 0 1'/>
+            
+            <geom name="right_thigh" class="leg_density" fromto="0 0 0 0 .01 -.34" size=".06"/>
+           
+            <body name="right_shin" pos="0 .01 -.403">
+              <joint type='hinge' name="right_knee" pos="0 0 .02" axis="0 1 0" range="-5 100" limited='true' damping='0.2'/>
+              <site name='right_shin' size='0.01' pos='0 0 -0.0' euler='0 0 0' rgba ='0 1 0 1'/>
+              
+              <geom name="right_shin" class="leg_density" fromto="0 0 0 0 0 -.3"  size=".049"/>
+              <body name="right_foot" pos="0.0 0 -.37">
+                <joint name="right_ankle_roll" pos="-0.04 0 0.02" axis="1 0 0" range="-40 25" limited='true' damping='1.000000'/>
+                <joint name="right_ankle_pitch" pos="-0.04 0 0.02" axis="0 1 0" range="-30 30" limited='true' damping='1.000000'/>
+                <geom name="right_foot" class="leg_density" type="box" size="0.12 0.05 .02" />
+                <!-- <site name='right_foot_site' size='0.01' pos='0.0 0 -0.02'/> -->
+                <site name='right_foot_site' type="box" size='0.12 0.05 .01' pos='0.0 0 -0.01'/>
+              </body>
+            </body>
+          </body>
+          <body name="left_thigh" pos="0 .1 -.04">
+            <joint type='hinge' name="left_hip_yaw" axis="0 0 -1" range="-50 20" limited='true' damping='1.000000'/>
+            <joint type='hinge' name="left_hip_roll" axis="-1 0 0" range="-20 8" limited='true' damping='1.000000'/>
+            <joint type='hinge' name="left_hip_pitch" axis="0 1 0" range="-30 40" limited='true' damping='1.000000'/>
+            <site name='left_thigh' size='0.01' pos='0 0 -0.0' euler='0 0 0' rgba ='0 1 0 1'/>
+            
+            <geom name="left_thigh" class="leg_density" fromto="0 0 0 0 -.01 -.34" size=".06"/>
+            
+            <body name="left_shin" pos="0 -.01 -.403">
+              
+              <joint name="left_knee" pos="0 0 .02" axis="0 1 0" range="-5 100"/>
+              <site name='left_shin' size='0.01' pos='0 0 -0.0' euler='0 0 0' rgba ='0 1 0 1'/>
+              <geom name="left_shin" class="leg_density" fromto="0 0 0 0 0 -.3"  size=".049" />
+              
+              <body name="left_foot" pos="0.0 0 -.37">
+                <joint name="left_ankle_roll" pos="-0.04 0 0.02" axis="1 0 0" range="-40 25" limited='true' damping='1.000000'/>
+                <joint name="left_ankle_pitch" pos="-0.04 0 0.02" axis="0 1 0" range="-30 30" limited='true' damping='1.000000'/>
+                <geom name="left_foot" class="leg_density" type="box" size="0.12 0.05 .02" />
+                <!-- <site name='left_foot_site' size='0.01' pos='0.0 0 -0.02'/> -->
+                <site name='left_foot_site' type="box" size='0.12 0.05 .01' pos='0.0 0 -0.01'/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+
+       <!-- <body name="upper_arm_right" pos="0 -.17 .06">
+        <joint name="shoulder1_right" axis="2 1 1"  class="shoulder"/>
+        <joint name="shoulder2_right" axis="0 -1 1" class="shoulder"/>
+        <geom name="upper_arm_right" fromto="0 0 0 .16 -.16 -.16" class="arm_upper"/>
+        <body name="lower_arm_right" pos=".18 -.18 -.18">
+          <joint name="elbow_right" axis="0 -1 1" class="elbow"/>
+          <geom name="lower_arm_right" fromto=".01 .01 .01 .17 .17 .17" class="arm_lower"/>
+          <body name="hand_right" pos=".18 .18 .18">
+            <geom name="hand_right" zaxis="1 1 1" class="hand"/>
+          </body>
+        </body>
+      </body>
+      <body name="upper_arm_left" pos="0 .17 .06">
+        <joint name="shoulder1_left" axis="-2 1 -1" class="shoulder"/>
+        <joint name="shoulder2_left" axis="0 -1 -1"  class="shoulder"/>
+        <geom name="upper_arm_left" fromto="0 0 0 .16 .16 -.16" class="arm_upper"/>
+        <body name="lower_arm_left" pos=".18 .18 -.18">
+          <joint name="elbow_left" axis="0 -1 -1" class="elbow"/>
+          <geom name="lower_arm_left" fromto=".01 -.01 .01 .17 -.17 .17" class="arm_lower"/>
+          <body name="hand_left" pos=".18 -.18 .18">
+            <geom name="hand_left" zaxis="1 -1 1" class="hand"/>
+          </body>
+        </body>
+      </body> -->
+
+    </body>
+  </worldbody>
+
+   <actuator>
+      <motor name='right_hip_yaw_t'     joint='right_hip_yaw'     ctrllimited='true' ctrlrange='-351 351'/>
+      <motor name='right_hip_roll_t'    joint='right_hip_roll'    ctrllimited='true' ctrlrange='-351 351'/>
+      <motor name='right_hip_pitch_t'   joint='right_hip_pitch'   ctrllimited='true' ctrlrange='-298 298'/>
+      <motor name='right_knee_t'        joint='right_knee'        ctrllimited='true' ctrlrange='-420 420'/>
+      <motor name='right_ankle_roll_t'  joint='right_ankle_roll'  ctrllimited='true' ctrlrange='-131 131'/>
+      <motor name='right_ankle_pitch_t' joint='right_ankle_pitch' ctrllimited='true' ctrlrange='-262 262'/>
+
+      <motor name='left_hip_yaw_t'      joint='left_hip_yaw'      ctrllimited='true' ctrlrange='-351 351'/>
+      <motor name='left_hip_roll_t'     joint='left_hip_roll'     ctrllimited='true' ctrlrange='-351 351'/>
+      <motor name='left_hip_pitch_t'    joint='left_hip_pitch'    ctrllimited='true' ctrlrange='-298 298'/>
+      <motor name='left_knee_t'         joint='left_knee'         ctrllimited='true' ctrlrange='-420 420'/>
+      <motor name='left_ankle_roll_t'   joint='left_ankle_roll'   ctrllimited='true' ctrlrange='-131 131'/>
+      <motor name='left_ankle_pitch_t'  joint='left_ankle_pitch'  ctrllimited='true' ctrlrange='-262 262'/>
+
+      <!-- <motor name="shoulder1_right"     joint="shoulder1_right"   ctrllimited='true' ctrlrange='-200 200'/>
+      <motor name="shoulder2_right"     joint="shoulder2_right"   ctrllimited='true' ctrlrange='-200 200'/>
+      <motor name="elbow_right"         joint="elbow_right"       ctrllimited='true' ctrlrange='-200 200'/>
+      
+      <motor name="shoulder1_left"      joint="shoulder1_left"    ctrllimited='true' ctrlrange='-200 200'/>
+      <motor name="shoulder2_left"      joint="shoulder2_left"    ctrllimited='true' ctrlrange='-200 200'/>
+      <motor name="elbow_left"          joint="elbow_left"        ctrllimited='true' ctrlrange='-200 200'/> -->
+  </actuator>
+
+  <sensor>
+    <touch name='touch_right_foot'  site='right_foot_site' />
+    <touch name='touch_left_foot'  site='left_foot_site' />
+  </sensor> 
+
+</mujoco>

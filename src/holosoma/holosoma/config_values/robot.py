@@ -1104,8 +1104,277 @@ g1_29dof_w_object = replace(
     ),
 )
 
+star_18dof = RobotConfig(
+    num_bodies=13,
+    dof_obs_size=12,
+    actions_dim=12,
+    policy_obs_dim=-1,
+    critic_obs_dim=-1,
+    algo_obs_dim_dict={},
+    key_bodies=["left_ankle_pitch_link", "right_ankle_pitch_link"],
+    num_feet=2,
+    foot_body_name="ankle_pitch_link",
+    foot_height_name="ankle_pitch_link",
+    knee_name="knee_link",
+    torso_name="pelvis",
+    dof_names=[
+        "left_hip_pitch_joint",
+        "left_hip_roll_joint",
+        "left_hip_yaw_joint",
+        "left_knee_joint",
+        "left_ankle_pitch_joint",
+        "left_ankle_roll_joint",
+        "right_hip_pitch_joint",
+        "right_hip_roll_joint",
+        "right_hip_yaw_joint",
+        "right_knee_joint",
+        "right_ankle_pitch_joint",
+        "right_ankle_roll_joint",
+    ],
+    upper_dof_names=[],
+    upper_left_arm_dof_names=[],
+    upper_right_arm_dof_names=[],
+    lower_dof_names=[
+        "left_hip_pitch_joint",
+        "left_hip_roll_joint",
+        "left_hip_yaw_joint",
+        "left_knee_joint",
+        "left_ankle_pitch_joint",
+        "left_ankle_roll_joint",
+        "right_hip_pitch_joint",
+        "right_hip_roll_joint",
+        "right_hip_yaw_joint",
+        "right_knee_joint",
+        "right_ankle_pitch_joint",
+        "right_ankle_roll_joint",
+    ],
+    has_torso=True,
+    has_upper_body_dof=False,
+    left_ankle_dof_names=["left_ankle_pitch_joint", "left_ankle_roll_joint"],
+    right_ankle_dof_names=["right_ankle_pitch_joint", "right_ankle_roll_joint"],
+    knee_dof_names=["left_knee_joint", "right_knee_joint"],
+    hips_dof_names=[
+        "left_hip_pitch_joint",
+        "left_hip_roll_joint",
+        "left_hip_yaw_joint",
+        "right_hip_pitch_joint",
+        "right_hip_roll_joint",
+        "right_hip_yaw_joint",
+    ],
+    dof_pos_lower_limit_list=[
+        -0.5236,  # left_hip_pitch: -30 deg
+        -0.3491,  # left_hip_roll: -20 deg
+        -0.8727,  # left_hip_yaw: -50 deg
+        -0.0873,  # left_knee: -5 deg
+        -0.5236,  # left_ankle_pitch: -30 deg
+        -0.6981,  # left_ankle_roll: -40 deg
+        -0.5236,  # right_hip_pitch: -30 deg
+        -0.3491,  # right_hip_roll: -20 deg
+        -0.8727,  # right_hip_yaw: -50 deg
+        -0.0873,  # right_knee: -5 deg
+        -0.5236,  # right_ankle_pitch: -30 deg
+        -0.6981,  # right_ankle_roll: -40 deg
+    ],
+    dof_pos_upper_limit_list=[
+        0.6981,   # left_hip_pitch: 40 deg
+        0.1396,   # left_hip_roll: 8 deg
+        0.3491,   # left_hip_yaw: 20 deg
+        1.7453,   # left_knee: 100 deg
+        0.5236,   # left_ankle_pitch: 30 deg
+        0.4363,   # left_ankle_roll: 25 deg
+        0.6981,   # right_hip_pitch: 40 deg
+        0.1396,   # right_hip_roll: 8 deg
+        0.3491,   # right_hip_yaw: 20 deg
+        1.7453,   # right_knee: 100 deg
+        0.5236,   # right_ankle_pitch: 30 deg
+        0.4363,   # right_ankle_roll: 25 deg
+    ],
+    dof_vel_limit_list=[
+        20.0,  # hip_pitch
+        20.0,  # hip_roll
+        32.0,  # hip_yaw
+        20.0,  # knee
+        37.0,  # ankle_pitch
+        37.0,  # ankle_roll
+        20.0,  # right leg
+        20.0,
+        32.0,
+        20.0,
+        37.0,
+        37.0,
+    ],
+    dof_effort_limit_list=[
+        298.0,  # left_hip_pitch (from ctrlrange)
+        351.0,  # left_hip_roll
+        351.0,  # left_hip_yaw
+        420.0,  # left_knee
+        262.0,  # left_ankle_pitch
+        131.0,  # left_ankle_roll
+        298.0,  # right_hip_pitch
+        351.0,  # right_hip_roll
+        351.0,  # right_hip_yaw
+        420.0,  # right_knee
+        262.0,  # right_ankle_pitch
+        131.0,  # right_ankle_roll
+    ],
+    dof_armature_list=[
+        0.01,
+        0.025,
+        0.01,
+        0.025,
+        0.007,
+        0.007,
+        0.01,
+        0.025,
+        0.01,
+        0.025,
+        0.007,
+        0.007,
+    ],
+    dof_joint_friction_list=[
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+    ],
+    body_names=[
+        "pelvis",
+        "left_hip_yaw_link",
+        "left_hip_roll_link",
+        "left_hip_pitch_link",
+        "left_knee_link",
+        "left_ankle_roll_link",
+        "left_ankle_pitch_link",
+        "right_hip_yaw_link",
+        "right_hip_roll_link",
+        "right_hip_pitch_link",
+        "right_knee_link",
+        "right_ankle_roll_link",
+        "right_ankle_pitch_link",
+    ],
+    terminate_after_contacts_on=["pelvis", "torso", "head"],
+    penalize_contacts_on=["pelvis", "torso", "head", "hip"],
+    init_state=RobotInitState(
+        pos=[0.0, 0.0, 0.80],  # x,y,z [m]
+        rot=[0.0, 0.0, 0.0, 1.0],  # x,y,z,w [quat]
+        lin_vel=[0.0, 0.0, 0.0],  # x,y,z [m/s]
+        ang_vel=[0.0, 0.0, 0.0],  # x,y,z [rad/s]
+        default_joint_angles={
+            "left_hip_pitch_joint": -0.3,
+            "left_hip_roll_joint": 0.0,
+            "left_hip_yaw_joint": 0.0,
+            "left_knee_joint": 0.6,
+            "left_ankle_pitch_joint": -0.3,
+            "left_ankle_roll_joint": 0.0,
+            "right_hip_pitch_joint": -0.3,
+            "right_hip_roll_joint": 0.0,
+            "right_hip_yaw_joint": 0.0,
+            "right_knee_joint": 0.6,
+            "right_ankle_pitch_joint": -0.3,
+            "right_ankle_roll_joint": 0.0,
+        },
+    ),
+    randomize_link_body_names=[
+        "pelvis",
+        "left_hip_yaw_link",
+        "left_hip_roll_link",
+        "left_hip_pitch_link",
+        "left_knee_link",
+        "right_hip_yaw_link",
+        "right_hip_roll_link",
+        "right_hip_pitch_link",
+        "right_knee_link",
+    ],
+    waist_dof_names=[],
+    waist_yaw_dof_name=None,
+    waist_roll_dof_name=None,
+    waist_pitch_dof_name=None,
+    arm_dof_names=[],
+    left_arm_dof_names=[],
+    right_arm_dof_names=[],
+    symmetry_joint_names={
+        "left_hip_pitch_joint": "right_hip_pitch_joint",
+        "left_hip_roll_joint": "right_hip_roll_joint",
+        "left_hip_yaw_joint": "right_hip_yaw_joint",
+        "left_knee_joint": "right_knee_joint",
+        "left_ankle_pitch_joint": "right_ankle_pitch_joint",
+        "left_ankle_roll_joint": "right_ankle_roll_joint",
+        "right_hip_pitch_joint": "left_hip_pitch_joint",
+        "right_hip_roll_joint": "left_hip_roll_joint",
+        "right_hip_yaw_joint": "left_hip_yaw_joint",
+        "right_knee_joint": "left_knee_joint",
+        "right_ankle_pitch_joint": "left_ankle_pitch_joint",
+        "right_ankle_roll_joint": "left_ankle_roll_joint",
+    },
+    flip_sign_joint_names=[
+        "left_hip_roll_joint",
+        "left_hip_yaw_joint",
+        "left_ankle_roll_joint",
+        "right_hip_roll_joint",
+        "right_hip_yaw_joint",
+        "right_ankle_roll_joint",
+    ],
+    apply_dof_armature_in_isaacgym=True,
+    contact_pairs_multiplier=8,
+    control=RobotControlConfig(
+        control_type="P",
+        stiffness={
+            "hip_yaw": 40.0,
+            "hip_roll": 100.0,
+            "hip_pitch": 40.0,
+            "knee": 100.0,
+            "ankle_pitch": 30.0,
+            "ankle_roll": 30.0,
+        },
+        damping={
+            "hip_yaw": 2.5,
+            "hip_roll": 6.0,
+            "hip_pitch": 2.5,
+            "knee": 6.0,
+            "ankle_pitch": 2.0,
+            "ankle_roll": 2.0,
+        },
+        action_scale=0.25,
+        action_clip_value=100.0,
+        clip_actions=True,
+        clip_torques=True,
+    ),
+    asset=RobotAssetConfig(
+        asset_root="@holosoma/data/robots",
+        collapse_fixed_joints=True,
+        replace_cylinder_with_capsule=True,
+        flip_visual_attachments=False,
+        armature=0.001,
+        thickness=0.01,
+        max_angular_velocity=1000.0,
+        max_linear_velocity=1000.0,
+        angular_damping=0.0,
+        linear_damping=0.0,
+        urdf_file="star/star_18dof.urdf",
+        usd_file=None,
+        xml_file="star/star_18dof.xml",
+        robot_type="star_18dof",
+        enable_self_collisions=False,
+        default_dof_drive_mode=3,
+        fix_base_link=False,
+    ),
+    bridge=RobotBridgeConfig(
+        sdk_type="unitree",  # Can be adjusted based on your actual hardware
+        motor_type="serial",
+    ),
+)
+
 DEFAULTS = {
     "g1_29dof": g1_29dof,
     "t1_29dof_waist_wrist": t1_29dof_waist_wrist,
     "g1_29dof_w_object": g1_29dof_w_object,
+    "star_18dof": star_18dof,
 }

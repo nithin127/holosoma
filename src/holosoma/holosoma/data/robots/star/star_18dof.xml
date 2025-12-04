@@ -1,0 +1,171 @@
+<mujoco model="star_18dof">
+    <compiler angle="radian" inertiafromgeom='auto' eulerseq='xyz'/>
+    <option gravity='0 0 -9.81' iterations='50' integrator="RK4" solver='Newton' timestep='0.002'/>
+
+    <asset>
+        <texture name="body" type="cube" builtin="flat" mark="cross" width="127" height="1278"
+                 rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+        <material name="body" texture="body" texuniform="true" rgba="0.8 0.3 0.6 1"/>
+        <material name="silver" rgba="0.7 0.7 0.7 1"/>
+    </asset>
+
+    <default>
+        <geom density="1700" friction="0.8 0.01 0.005"/>
+        <joint frictionloss="0.1" solimplimit="0.97 0.995 0.001"/>
+
+        <default class="body">
+            <geom type="capsule" condim="3" friction="0.8" solimp="0.9 0.99 0.003" solref="0.015 1" material="body"/>
+            <joint type="hinge" damping="1.0" armature="0.01" limited="true" solimplimit="0 0.99 0.01"/>
+        </default>
+
+        <default class="collision">
+            <geom group="3" contype="1" conaffinity="1"/>
+            <default class="foot">
+                <geom type="capsule" size="0.01" condim="3" friction="1.5 0.005 0.0001"
+                      solimp="0.9 0.95 0.001 0.5 2" solref="0.02 1"/>
+            </default>
+        </default>
+
+        <default class="torso_density1">
+            <geom density="3000"/>
+        </default>
+        <default class="torso_density2">
+            <geom density="3000"/>
+        </default>
+        <default class="torso_density3">
+            <geom density="2000"/>
+        </default>
+        <default class="pelvis_density">
+            <geom density="3700"/>
+        </default>
+        <default class="leg_density">
+            <geom density="1700"/>
+        </default>
+    </default>
+
+    <worldbody>
+        <body name="pelvis" pos="0 0 0.80" childclass="body">
+            <freejoint name="floating_base_joint"/>
+            <site name="imu" size="0.01" pos="0 0 -0.1"/>
+            <geom name="pelvis_collision" class="collision" type="sphere" size="0.09" pos="0 0 -0.08"/>
+            <geom name="torso" type="capsule" class="torso_density1" fromto="0 -0.07 0 0 0.07 0" size="0.07"/>
+            <geom name="upper_waist" type="capsule" class="torso_density2" fromto="-0.01 -0.06 -0.12 -0.01 0.06 -0.12" size="0.06"/>
+
+            <!-- Head -->
+            <body name="head" pos="0 0 0.19">
+                <geom name="head" type="sphere" size="0.09"/>
+            </body>
+
+            <body name="torso_link" pos="-0.01 0 -0.26">
+                <geom name="lower_waist" type="capsule" class="torso_density3" fromto="0 -0.06 0 0 0.06 0" size="0.06"/>
+
+                <!-- Pelvis/butt geometry -->
+                <body name="pelvis_lower" pos="0 0 -0.165">
+                    <geom name="butt" type="capsule" class="pelvis_density" fromto="-0.04 -0.07 0 -0.04 0.07 0" size="0.09"/>
+                </body>
+
+                <!-- Right Leg -->
+                <body name="right_hip_yaw_link" pos="0 -0.1 -0.205">
+                    <joint name="right_hip_yaw_joint" axis="0 0 1" range="-0.8727 0.3491" damping="1.0" armature="0.01"/>
+                    <inertial pos="0 0 0" mass="0.5" diaginertia="0.001 0.001 0.001"/>
+
+                    <body name="right_hip_roll_link" pos="0 0 0">
+                        <joint name="right_hip_roll_joint" axis="1 0 0" range="-0.3491 0.1396" damping="1.0" armature="0.025"/>
+                        <inertial pos="0 0 0" mass="0.5" diaginertia="0.001 0.001 0.001"/>
+
+                        <body name="right_hip_pitch_link" pos="0 0 0">
+                            <joint name="right_hip_pitch_joint" axis="0 1 0" range="-0.5236 0.6981" damping="1.0" armature="0.01"/>
+                            <geom name="right_thigh" type="capsule" class="leg_density" fromto="0 0 0 0 0.01 -0.34" size="0.06"/>
+
+                            <body name="right_knee_link" pos="0 0.01 -0.403">
+                                <joint name="right_knee_joint" pos="0 0 0.02" axis="0 1 0" range="-0.0873 1.7453" damping="0.2" armature="0.025"/>
+                                <geom name="right_shin" type="capsule" class="leg_density" fromto="0 0 0 0 0 -0.3" size="0.049"/>
+
+                                <body name="right_ankle_roll_link" pos="-0.04 0 -0.35">
+                                    <joint name="right_ankle_roll_joint" axis="1 0 0" range="-0.6981 0.4363" damping="1.0" armature="0.007"/>
+                                    <inertial pos="0 0 0" mass="0.3" diaginertia="0.001 0.001 0.001"/>
+
+                                    <body name="right_ankle_pitch_link" pos="0.04 0 0">
+                                        <joint name="right_ankle_pitch_joint" axis="0 1 0" range="-0.5236 0.5236" damping="1.0" armature="0.007"/>
+                                        <!-- Visible foot box -->
+                                        <geom name="right_foot" type="box" size="0.12 0.05 0.02" pos="0 0 -0.02" class="leg_density"/>
+                                        <!-- Collision capsules for better contact -->
+                                        <geom name="right_foot_collision1" class="foot" type="capsule" fromto="0.1 -0.026 -0.025 0.05 -0.027 -0.025"/>
+                                        <geom name="right_foot_collision2" class="foot" type="capsule" fromto="-0.044 -0.018 -0.025 0.123 -0.018 -0.025"/>
+                                        <geom name="right_foot_collision3" class="foot" type="capsule" fromto="-0.052 -0.01 -0.025 0.13 -0.01 -0.025"/>
+                                        <geom name="right_foot_collision4" class="foot" type="capsule" fromto="-0.054 0 -0.025 0.132 0 -0.025"/>
+                                        <geom name="right_foot_collision5" class="foot" type="capsule" fromto="-0.052 0.01 -0.025 0.13 0.01 -0.025"/>
+                                        <geom name="right_foot_collision6" class="foot" type="capsule" fromto="-0.044 0.018 -0.025 0.123 0.018 -0.025"/>
+                                        <geom name="right_foot_collision7" class="foot" type="capsule" fromto="0.1 0.026 -0.025 0.05 0.026 -0.025"/>
+                                        <site name="right_foot" pos="0 0 -0.025"/>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+
+                <!-- Left Leg -->
+                <body name="left_hip_yaw_link" pos="0 0.1 -0.205">
+                    <joint name="left_hip_yaw_joint" axis="0 0 -1" range="-0.8727 0.3491" damping="1.0" armature="0.01"/>
+                    <inertial pos="0 0 0" mass="0.5" diaginertia="0.001 0.001 0.001"/>
+
+                    <body name="left_hip_roll_link" pos="0 0 0">
+                        <joint name="left_hip_roll_joint" axis="-1 0 0" range="-0.3491 0.1396" damping="1.0" armature="0.025"/>
+                        <inertial pos="0 0 0" mass="0.5" diaginertia="0.001 0.001 0.001"/>
+
+                        <body name="left_hip_pitch_link" pos="0 0 0">
+                            <joint name="left_hip_pitch_joint" axis="0 1 0" range="-0.5236 0.6981" damping="1.0" armature="0.01"/>
+                            <geom name="left_thigh" type="capsule" class="leg_density" fromto="0 0 0 0 -0.01 -0.34" size="0.06"/>
+
+                            <body name="left_knee_link" pos="0 -0.01 -0.403">
+                                <joint name="left_knee_joint" pos="0 0 0.02" axis="0 1 0" range="-0.0873 1.7453" damping="0.2" armature="0.025"/>
+                                <geom name="left_shin" type="capsule" class="leg_density" fromto="0 0 0 0 0 -0.3" size="0.049"/>
+
+                                <body name="left_ankle_roll_link" pos="-0.04 0 -0.35">
+                                    <joint name="left_ankle_roll_joint" axis="1 0 0" range="-0.6981 0.4363" damping="1.0" armature="0.007"/>
+                                    <inertial pos="0 0 0" mass="0.3" diaginertia="0.001 0.001 0.001"/>
+
+                                    <body name="left_ankle_pitch_link" pos="0.04 0 0">
+                                        <joint name="left_ankle_pitch_joint" axis="0 1 0" range="-0.5236 0.5236" damping="1.0" armature="0.007"/>
+                                        <!-- Visible foot box -->
+                                        <geom name="left_foot" type="box" size="0.12 0.05 0.02" pos="0 0 -0.02" class="leg_density"/>
+                                        <!-- Collision capsules for better contact -->
+                                        <geom name="left_foot_collision1" class="foot" type="capsule" fromto="0.1 -0.026 -0.025 0.05 -0.027 -0.025"/>
+                                        <geom name="left_foot_collision2" class="foot" type="capsule" fromto="-0.044 -0.018 -0.025 0.123 -0.018 -0.025"/>
+                                        <geom name="left_foot_collision3" class="foot" type="capsule" fromto="-0.052 -0.01 -0.025 0.13 -0.01 -0.025"/>
+                                        <geom name="left_foot_collision4" class="foot" type="capsule" fromto="-0.054 0 -0.025 0.132 0 -0.025"/>
+                                        <geom name="left_foot_collision5" class="foot" type="capsule" fromto="-0.052 0.01 -0.025 0.13 0.01 -0.025"/>
+                                        <geom name="left_foot_collision6" class="foot" type="capsule" fromto="-0.044 0.018 -0.025 0.123 0.018 -0.025"/>
+                                        <geom name="left_foot_collision7" class="foot" type="capsule" fromto="0.1 0.026 -0.025 0.05 0.026 -0.025"/>
+                                        <site name="left_foot" pos="0 0 -0.025"/>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <motor name="right_hip_yaw" joint="right_hip_yaw_joint" ctrllimited="true" ctrlrange="-351 351" gear="1"/>
+        <motor name="right_hip_roll" joint="right_hip_roll_joint" ctrllimited="true" ctrlrange="-351 351" gear="1"/>
+        <motor name="right_hip_pitch" joint="right_hip_pitch_joint" ctrllimited="true" ctrlrange="-298 298" gear="1"/>
+        <motor name="right_knee" joint="right_knee_joint" ctrllimited="true" ctrlrange="-420 420" gear="1"/>
+        <motor name="right_ankle_roll" joint="right_ankle_roll_joint" ctrllimited="true" ctrlrange="-131 131" gear="1"/>
+        <motor name="right_ankle_pitch" joint="right_ankle_pitch_joint" ctrllimited="true" ctrlrange="-262 262" gear="1"/>
+        <motor name="left_hip_yaw" joint="left_hip_yaw_joint" ctrllimited="true" ctrlrange="-351 351" gear="1"/>
+        <motor name="left_hip_roll" joint="left_hip_roll_joint" ctrllimited="true" ctrlrange="-351 351" gear="1"/>
+        <motor name="left_hip_pitch" joint="left_hip_pitch_joint" ctrllimited="true" ctrlrange="-298 298" gear="1"/>
+        <motor name="left_knee" joint="left_knee_joint" ctrllimited="true" ctrlrange="-420 420" gear="1"/>
+        <motor name="left_ankle_roll" joint="left_ankle_roll_joint" ctrllimited="true" ctrlrange="-131 131" gear="1"/>
+        <motor name="left_ankle_pitch" joint="left_ankle_pitch_joint" ctrllimited="true" ctrlrange="-262 262" gear="1"/>
+    </actuator>
+
+    <sensor>
+        <touch name="touch_right_foot" site="right_foot"/>
+        <touch name="touch_left_foot" site="left_foot"/>
+    </sensor>
+</mujoco>
