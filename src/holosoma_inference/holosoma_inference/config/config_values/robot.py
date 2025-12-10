@@ -251,12 +251,103 @@ t1_29dof = RobotConfig(
 
 
 # =============================================================================
+# STAR Robot Config
+# =============================================================================
+
+star_18dof = RobotConfig(
+    # Identity
+    robot_type="star_18dof",
+    robot="star",
+
+    # SDK Configuration
+    sdk_type="ros2",  # Using ros2 for simulation-only robot
+    motor_type="serial",
+    message_type="HG",
+    use_sensor=False,
+
+    # Dimensions (12 actuated joints, 18 total DOF including 6-DOF base)
+    num_motors=12,
+    num_joints=12,
+    num_upper_body_joints=0,  # STAR has no upper body
+
+    # Default Positions (matching training config)
+    default_dof_angles=(
+        0.0, 0.0, -0.3, 0.6, 0.0, -0.3,  # left leg: yaw, roll, pitch, knee, roll, pitch
+        0.0, 0.0, -0.3, 0.6, 0.0, -0.3,  # right leg: yaw, roll, pitch, knee, roll, pitch
+    ),
+    default_motor_angles=(
+        0.0, 0.0, -0.3, 0.6, 0.0, -0.3,  # left leg
+        0.0, 0.0, -0.3, 0.6, 0.0, -0.3,  # right leg
+    ),
+
+    # Limits (from training config)
+    joint_pos_min=(
+        -0.8727, -0.3491, -0.5236, -0.0873, -0.6981, -0.5236,  # left leg
+        -0.8727, -0.3491, -0.5236, -0.0873, -0.6981, -0.5236,  # right leg
+    ),
+    joint_pos_max=(
+        0.3491, 0.1396, 0.6981, 1.7453, 0.4363, 0.5236,  # left leg
+        0.3491, 0.1396, 0.6981, 1.7453, 0.4363, 0.5236,  # right leg
+    ),
+    joint_vel_limit=(
+        32.0, 20.0, 20.0, 20.0, 37.0, 37.0,  # left leg
+        32.0, 20.0, 20.0, 20.0, 37.0, 37.0,  # right leg
+    ),
+    motor_effort_limit=(
+        351.0, 351.0, 298.0, 420.0, 131.0, 262.0,  # left leg
+        351.0, 351.0, 298.0, 420.0, 131.0, 262.0,  # right leg
+    ),
+
+    # Mappings
+    motor2joint=tuple(range(12)),  # Identity mapping
+    joint2motor=tuple(range(12)),  # Identity mapping
+    dof_names=(
+        "left_hip_yaw_joint", "left_hip_roll_joint", "left_hip_pitch_joint",
+        "left_knee_joint", "left_ankle_roll_joint", "left_ankle_pitch_joint",
+        "right_hip_yaw_joint", "right_hip_roll_joint", "right_hip_pitch_joint",
+        "right_knee_joint", "right_ankle_roll_joint", "right_ankle_pitch_joint",
+    ),
+    dof_names_upper_body=(),  # No upper body
+    dof_names_lower_body=(
+        "left_hip_yaw_joint", "left_hip_roll_joint", "left_hip_pitch_joint",
+        "left_knee_joint", "left_ankle_roll_joint", "left_ankle_pitch_joint",
+        "right_hip_yaw_joint", "right_hip_roll_joint", "right_hip_pitch_joint",
+        "right_knee_joint", "right_ankle_roll_joint", "right_ankle_pitch_joint",
+    ),
+
+    # Link Names
+    torso_link_name="torso",
+    left_hand_link_name=None,
+    right_hand_link_name=None,
+
+    # Unitree-Specific Constants (placeholder)
+    unitree_legged_const={
+        "HIGHLEVEL": 238,
+        "LOWLEVEL": 255,
+        "TRIGERLEVEL": 240,
+        "PosStopF": 2146000000.0,
+        "VelStopF": 16000.0,
+        "MODE_MACHINE": 5,
+        "MODE_PR": 0,
+    },
+    weak_motor_joint_index={
+        "left_hip_yaw_joint": 0, "left_hip_roll_joint": 1, "left_hip_pitch_joint": 2,
+        "left_knee_joint": 3, "left_ankle_roll_joint": 4, "left_ankle_pitch_joint": 5,
+        "right_hip_yaw_joint": 6, "right_hip_roll_joint": 7, "right_hip_pitch_joint": 8,
+        "right_knee_joint": 9, "right_ankle_roll_joint": 10, "right_ankle_pitch_joint": 11,
+    },
+    motion={"body_name_ref": ["torso"]},
+)
+
+
+# =============================================================================
 # Default Configurations Dictionary
 # =============================================================================
 
 DEFAULTS = {
     "g1-29dof": g1_29dof,
     "t1-29dof": t1_29dof,
+    "star-18dof": star_18dof,
 }
 """Dictionary of all available robot configurations.
 

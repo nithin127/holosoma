@@ -1367,7 +1367,7 @@ star_18dof = RobotConfig(
         fix_base_link=False,
     ),
     bridge=RobotBridgeConfig(
-        sdk_type="unitree",
+        sdk_type="ros2",
         motor_type="serial",
     ),
 )

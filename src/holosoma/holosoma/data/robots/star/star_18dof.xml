@@ -75,10 +75,10 @@
           <!-- LEFT LEG -->
           <body name="left_hip_yaw_link" pos="0 .1 -.04">
             <inertial pos="0 0 0" mass="1.0" diaginertia="0.001 0.001 0.001"/>
-            <joint type='hinge' name="left_hip_yaw_joint" axis="0 0 -1" range="-50 20" limited='true' damping='1.0' frictionloss="0.1"/>
+            <joint type='hinge' name="left_hip_yaw_joint" axis="0 0 1" range="-50 20" limited='true' damping='1.0' frictionloss="0.1"/>
             <body name="left_hip_roll_link" pos="0 0 0">
               <inertial pos="0 0 0" mass="1.0" diaginertia="0.001 0.001 0.001"/>
-              <joint type='hinge' name="left_hip_roll_joint" axis="-1 0 0" range="-20 8" limited='true' damping='1.0' frictionloss="0.1"/>
+              <joint type='hinge' name="left_hip_roll_joint" axis="1 0 0" range="-20 8" limited='true' damping='1.0' frictionloss="0.1"/>
               <body name="left_hip_pitch_link" pos="0 0 0">
                 <inertial pos="0 0 -0.17" mass="6.0" diaginertia="0.1 0.1 0.02"/>
                 <joint type='hinge' name="left_hip_pitch_joint" axis="0 1 0" range="-30 40" limited='true' damping='1.0' frictionloss="0.1"/>
@@ -147,20 +147,20 @@
 
   <actuator>
     <!-- LEFT LEG - order matches robot.py dof_names -->
-    <motor name='left_hip_yaw_t'      joint='left_hip_yaw_joint'      ctrllimited='true' ctrlrange='-351 351'/>
-    <motor name='left_hip_roll_t'     joint='left_hip_roll_joint'     ctrllimited='true' ctrlrange='-351 351'/>
-    <motor name='left_hip_pitch_t'    joint='left_hip_pitch_joint'    ctrllimited='true' ctrlrange='-298 298'/>
-    <motor name='left_knee_t'         joint='left_knee_joint'         ctrllimited='true' ctrlrange='-420 420'/>
-    <motor name='left_ankle_roll_t'   joint='left_ankle_roll_joint'   ctrllimited='true' ctrlrange='-131 131'/>
-    <motor name='left_ankle_pitch_t'  joint='left_ankle_pitch_joint'  ctrllimited='true' ctrlrange='-262 262'/>
+    <motor name='left_hip_yaw_joint'      joint='left_hip_yaw_joint'      ctrllimited='true' ctrlrange='-351 351'/>
+    <motor name='left_hip_roll_joint'     joint='left_hip_roll_joint'     ctrllimited='true' ctrlrange='-351 351'/>
+    <motor name='left_hip_pitch_joint'    joint='left_hip_pitch_joint'    ctrllimited='true' ctrlrange='-298 298'/>
+    <motor name='left_knee_joint'         joint='left_knee_joint'         ctrllimited='true' ctrlrange='-420 420'/>
+    <motor name='left_ankle_roll_joint'   joint='left_ankle_roll_joint'   ctrllimited='true' ctrlrange='-131 131'/>
+    <motor name='left_ankle_pitch_joint'  joint='left_ankle_pitch_joint'  ctrllimited='true' ctrlrange='-262 262'/>
 
     <!-- RIGHT LEG -->
-    <motor name='right_hip_yaw_t'     joint='right_hip_yaw_joint'     ctrllimited='true' ctrlrange='-351 351'/>
-    <motor name='right_hip_roll_t'    joint='right_hip_roll_joint'    ctrllimited='true' ctrlrange='-351 351'/>
-    <motor name='right_hip_pitch_t'   joint='right_hip_pitch_joint'   ctrllimited='true' ctrlrange='-298 298'/>
-    <motor name='right_knee_t'        joint='right_knee_joint'        ctrllimited='true' ctrlrange='-420 420'/>
-    <motor name='right_ankle_roll_t'  joint='right_ankle_roll_joint'  ctrllimited='true' ctrlrange='-131 131'/>
-    <motor name='right_ankle_pitch_t' joint='right_ankle_pitch_joint' ctrllimited='true' ctrlrange='-262 262'/>
+    <motor name='right_hip_yaw_joint'     joint='right_hip_yaw_joint'     ctrllimited='true' ctrlrange='-351 351'/>
+    <motor name='right_hip_roll_joint'    joint='right_hip_roll_joint'    ctrllimited='true' ctrlrange='-351 351'/>
+    <motor name='right_hip_pitch_joint'   joint='right_hip_pitch_joint'   ctrllimited='true' ctrlrange='-298 298'/>
+    <motor name='right_knee_joint'        joint='right_knee_joint'        ctrllimited='true' ctrlrange='-420 420'/>
+    <motor name='right_ankle_roll_joint'  joint='right_ankle_roll_joint'  ctrllimited='true' ctrlrange='-131 131'/>
+    <motor name='right_ankle_pitch_joint' joint='right_ankle_pitch_joint' ctrllimited='true' ctrlrange='-262 262'/>
   </actuator>
 
   <sensor>

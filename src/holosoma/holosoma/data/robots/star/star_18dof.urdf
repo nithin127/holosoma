@@ -302,7 +302,7 @@
     <parent link="pelvis"/>
     <child link="left_hip_yaw_link"/>
     <origin xyz="0 0.1 -0.04" rpy="0 0 0"/>
-    <axis xyz="0 0 -1"/>
+    <axis xyz="0 0 1"/>
     <limit lower="-0.8727" upper="0.3491" effort="351.0" velocity="32.0"/>
     <dynamics damping="1.0" friction="0.1"/>
   </joint>
@@ -320,7 +320,7 @@
     <parent link="left_hip_yaw_link"/>
     <child link="left_hip_roll_link"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
-    <axis xyz="-1 0 0"/>
+    <axis xyz="1 0 0"/>
     <limit lower="-0.3491" upper="0.1396" effort="351.0" velocity="20.0"/>
     <dynamics damping="1.0" friction="0.1"/>
   </joint>

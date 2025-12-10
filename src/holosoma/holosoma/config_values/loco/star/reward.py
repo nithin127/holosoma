@@ -84,35 +84,35 @@ star_18dof_loco_fast_sac = RewardManagerCfg(
     terms={
         "tracking_lin_vel": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:tracking_lin_vel",
-            weight=2.0,
+            weight=4.5,
             params={"tracking_sigma": 0.25},
         ),
         "tracking_ang_vel": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:tracking_ang_vel",
-            weight=1.5,
+            weight=3.2,
             params={"tracking_sigma": 0.25},
         ),
         "penalty_ang_vel_xy": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:penalty_ang_vel_xy",
-            weight=-1.0,
+            weight=-5.0,
             params={},
             tags=["penalty_curriculum"],
         ),
         "penalty_orientation": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:penalty_orientation",
-            weight=-10.0,
+            weight=-15.0,
             params={},
             tags=["penalty_curriculum"],
         ),
         "penalty_action_rate": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:penalty_action_rate",
-            weight=-2.0,
+            weight=-1.2,
             params={},
             tags=["penalty_curriculum"],
         ),
         "feet_phase": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:feet_phase",
-            weight=5.0,
+            weight=12.5,
             params={"swing_height": 0.09, "tracking_sigma": 0.008},
         ),
         "pose": RewardTermCfg(
@@ -121,17 +121,17 @@ star_18dof_loco_fast_sac = RewardManagerCfg(
             params={
                 "pose_weights": [
                     0.01,  # left_hip_pitch
-                    1.0,   # left_hip_roll
+                    0.2,   # left_hip_roll
                     5.0,   # left_hip_yaw
                     0.01,  # left_knee
-                    5.0,   # left_ankle_pitch
-                    5.0,   # left_ankle_roll
+                    3.0,   # left_ankle_pitch
+                    3.0,   # left_ankle_roll
                     0.01,  # right_hip_pitch
-                    1.0,   # right_hip_roll
+                    0.2,   # right_hip_roll
                     5.0,   # right_hip_yaw
                     0.01,  # right_knee
-                    5.0,   # right_ankle_pitch
-                    5.0,   # right_ankle_roll
+                    3.0,   # right_ankle_pitch
+                    3.0,   # right_ankle_roll
                 ],
             },
             tags=["penalty_curriculum"],
@@ -144,13 +144,13 @@ star_18dof_loco_fast_sac = RewardManagerCfg(
         ),
         "penalty_feet_ori": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:penalty_feet_ori",
-            weight=-5.0,
+            weight=-12.0,
             params={},
             tags=["penalty_curriculum"],
         ),
         "alive": RewardTermCfg(
             func="holosoma.managers.reward.terms.locomotion:alive",
-            weight=10.0,
+            weight=17.0,
             params={},
         ),
     },

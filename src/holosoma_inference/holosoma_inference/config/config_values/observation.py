@@ -142,12 +142,61 @@ wbt = ObservationConfig(
 )
 
 # =============================================================================
+# STAR Locomotion Observation Configuration
+# =============================================================================
+
+loco_star_18dof = ObservationConfig(
+    obs_dict={
+        "actor_obs": [
+            "base_ang_vel",
+            "projected_gravity",
+            "command_lin_vel",
+            "command_ang_vel",
+            "dof_pos",
+            "dof_vel",
+            "actions",
+            "sin_phase",
+            "cos_phase",
+        ]
+    },
+    obs_dims={
+        "base_lin_vel": 3,
+        "base_ang_vel": 3,
+        "projected_gravity": 3,
+        "command_lin_vel": 2,
+        "command_ang_vel": 1,
+        "dof_pos": 12,  # STAR has 12 actuated joints
+        "dof_vel": 12,
+        "actions": 12,
+        "sin_phase": 1,
+        "cos_phase": 1,
+    },
+    obs_scales={
+        "base_lin_vel": 2.0,
+        "base_ang_vel": 0.25,
+        "projected_gravity": 1.0,
+        "command_lin_vel": 1.0,
+        "command_ang_vel": 1.0,
+        "dof_pos": 1.0,
+        "dof_vel": 0.05,
+        "actions": 1.0,
+        "sin_phase": 1.0,
+        "cos_phase": 1.0,
+    },
+    history_length_dict={
+        "actor_obs": 1,
+    },
+)
+
+
+# =============================================================================
 # Default Configurations Dictionary
 # =============================================================================
 
 DEFAULTS = {
     "loco-g1-29dof": loco_g1_29dof,
     "loco-t1-29dof": loco_t1_29dof,
+    "loco-star-18dof": loco_star_18dof,
     "wbt": wbt,
 }
 """Dictionary of all available observation configurations.
