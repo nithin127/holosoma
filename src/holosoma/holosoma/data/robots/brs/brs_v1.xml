@@ -1,0 +1,433 @@
+<mujoco>
+    <compiler inertiafromgeom='auto' angle='degree' eulerseq='xyz' meshdir='meshes' discardvisual="false"/>
+    <option gravity='0 0 -9.81' iterations='50' solver='Newton' timestep='0.001'/>
+
+    <asset>
+
+        <material
+            name='collision'
+            rgba='0.1 0.5 0.9 0.4'
+        />
+
+        <material
+            name="torso"
+            rgba="0.87 0.67 0.41 1"
+        />
+
+        <material
+            name="hip-yaw"
+            rgba="1 0.27 0.47 1"
+        />
+
+        <material
+            name="hip-roll"
+            rgba="0.28 0.89 0.33 1"
+        />
+
+        <material
+            name="hip-pitch"
+            rgba="0.25 0.43 1 1"
+        />
+
+        <material
+            name="knee-pitch"
+            rgba="0.94 0.94 0.94 1"
+        />
+
+        <material
+            name="ankle-roll"
+            rgba="0.21 1 0.68 1"
+        />
+
+        <material
+            name="ankle-pitch"
+            rgba="1 0.66 0.09 1"
+        />
+
+        <texture
+            builtin='checker'
+            height='512'
+            name='plane'
+            rgb1='0 0 0'
+            rgb2='0.8 0.8 0.8'
+            type='2d'
+            width='512'
+        />
+
+        <material
+            name='plane'
+            reflectance='0.000000'
+            texrepeat='1 1'
+            texture='plane'
+            texuniform='true'
+        />
+
+        <texture type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="512" height="512"/>
+        <material name="grid" rgba="0.8 0.6 0.4 1"/>
+
+        <!-- meshes -->
+        <mesh name="torso" file="Torso.STL" />
+
+        <mesh name="right-roll" file="Right_Roll.STL" />
+        <mesh name="right-pitch" file="Right_Pitch.STL" />
+        <mesh name="right-yaw" file="Right_Yaw.STL" />
+
+        <mesh name="right-ankle-roll" file="Right_AnkleRoll.STL" />
+        <mesh name="right-ankle-pitch" file="Right_AnklePitch.STL" />
+        <mesh name="right-knee-pitch" file="Right_KneePitch.STL" />
+
+        <mesh name="left-roll" file="Left_Roll.STL" />
+        <mesh name="left-pitch" file="Left_Pitch.STL" />
+        <mesh name="left-yaw" file="Left_Yaw.STL" />
+
+        <mesh name="left-ankle-roll" file="Left_AnkleRoll.STL" />
+        <mesh name="left-ankle-pitch" file="Left_AnklePitch.STL" />
+        <mesh name="left-knee-pitch" file="Left_KneePitch.STL" />
+
+    </asset>
+
+    <default>
+        <default class='collision_1'>
+            <geom conaffinity='1' condim='3' contype='2' material='collision'/>
+        </default>
+
+        <default class='collision_2'>
+            <geom conaffinity='2' condim='3' contype='1' material='collision'/>
+        </default>
+
+        <default class='robot'>
+            <geom material='robot'/>
+        </default>
+
+        <equality solref='0.005 1'/>
+
+        <geom conaffinity='0' condim='1' contype='0' solref='0.005 1'/>
+
+        <joint stiffness="0" damping="0" armature="0.01" />
+
+        <motor ctrllimited='true' ctrlrange='-120 120'/>
+
+    </default>
+
+    <worldbody>
+
+        <geom name="floor" size="0 0 .05" type="plane" material="grid" condim="3" contype="15" conaffinity="15"/>
+        <light name="spotlight" mode="targetbodycom" target="torso"
+           diffuse=".8 .8 .8" specular="0.3 0.3 0.3" pos="0 0 5" cutoff="10"/>
+
+        <!-- torso -->
+        <body name='torso' pos='0 0 1.15' euler='0 0 0'>
+
+            <light name="top" pos="0 0 2" mode="trackcom"/>
+            <camera name="back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
+            <camera name="side" pos="0 -5 0.5" xyaxes="1 0 0 0 1 3" mode="trackcom"/>
+
+            <joint type='free' limited='false'/>
+
+            <geom
+                type='mesh'
+                mesh='torso'
+                material="torso"
+                class="collision_1"
+                mass='24.227'
+            />
+
+            <!-- right hip yaw -->
+            <body name='right-hip-yaw' pos='0 -0.13 -0.0765' euler='0 0 0'>
+
+                <joint
+                    name='right-hip-yaw'
+                    type='hinge'
+                    pos='0 0 0'
+                    axis='0 0 1'
+                    range='-25 25'
+                    damping='0'
+                />
+
+                <geom
+                    type='mesh'
+                    mesh='right-yaw'
+                    material="hip-yaw"
+                    class="collision_2"
+                    mass="1.4819"
+                />
+
+                <!-- right hip roll -->
+                <body name='right-hip-roll' pos='0 0 -0.086' euler='0 0 0'>
+
+                    <joint
+                        name='right-hip-roll'
+                        type='hinge'
+                        pos='0 0 0'
+                        axis='1 0 0'
+                        range='-25 25'
+                        damping='0'
+                    />
+
+                    <geom
+                        type='mesh'
+                        mesh='right-roll'
+                        material="hip-roll"
+                        class="collision_1"
+                        mass="2.7882"
+                    />
+
+                    <!-- right hip pitch -->
+                    <body name='right-hip-pitch' pos='0 0 0' euler='0 0 0'>
+
+                        <joint
+                            name='right-hip-pitch'
+                            type='hinge'
+                            pos='0 0 0'
+                            axis='0 1 0'
+                            range='-110 45'
+                            damping='0'
+                        />
+
+                        <geom
+                            type='mesh'
+                            mesh='right-pitch'
+                            material="hip-pitch"
+                            class="collision_2"
+                            mass="6.0259"
+                        />
+
+                        <!-- right knee pitch -->
+                        <body name='right-knee-pitch' pos='0 0 -0.44' euler='0 0 0'>
+
+                            <joint
+                                name='right-knee-pitch'
+                                type='hinge'
+                                pos='0 0 0'
+                                axis='0 1 0'
+                                range='-5 100'
+                                damping='0'
+                            />
+
+                            <geom
+                                type='mesh'
+                                mesh='right-knee-pitch'
+                                material="knee-pitch"
+                                class="collision_1"
+                                mass="4.1262"
+                            />
+
+                            <!-- right ankle roll -->
+                            <body name='right-ankle-roll' pos='0 0 -0.43' euler='0 0 0'>
+
+                                <joint
+                                    name='right-ankle-roll'
+                                    type='hinge'
+                                    pos='0 0 0'
+                                    axis='1 0 0'
+                                    range='-35 35'
+                                    damping='0'
+                                />
+
+                                <geom
+                                    type='mesh'
+                                    mesh='right-ankle-roll'
+                                    material="ankle-roll"
+                                    class="collision_2"
+                                    mass="0.37504"
+                                />
+
+                                <!-- right ankle pitch -->
+                                <body name='right-ankle-pitch' pos='0 0 0' euler='0 0 0'>
+
+                                    <joint
+                                        name='right-ankle-pitch'
+                                        type='hinge'
+                                        pos='0 0 0'
+                                        axis='0 1 0'
+                                        range='-30 30'
+                                        damping='0'
+                                    />
+
+                                    <geom
+                                        type='box'
+                                        material="ankle-pitch"
+                                        class="collision_1"
+                                        mass="3.0811"
+                                        size='0.1325 0.075 0.02' pos='0.0375 0 -0.1'
+                                    />
+
+                                    <site name='right-foot' type="box" size='0.1325 0.075 0.01' pos='0.0375 0 -0.12'/>
+
+                                </body>
+
+                            </body>
+
+                        </body>
+
+                    </body>
+
+                </body>
+
+            </body>
+
+
+            <!-- left hip yaw -->
+            <body name='left-hip-yaw' pos='0 0.13 -0.0765' euler='0 0 0'>
+
+                <joint
+                    name='left-hip-yaw'
+                    type='hinge'
+                    pos='0 0 0'
+                    axis='0 0 1'
+                    range='-25 25'
+                    damping='0'
+                />
+
+                <geom
+                    type='mesh'
+                    mesh='left-yaw'
+                    material="hip-yaw"
+                    class="collision_2"
+                    mass="1.4819"
+                />
+
+                <!-- left hip roll -->
+                <body name='left-hip-roll' pos='0 0 -0.086' euler='0 0 0'>
+
+                    <joint
+                        name='left-hip-roll'
+                        type='hinge'
+                        pos='0 0 0'
+                        axis='1 0 0'
+                        range='-25 25'
+                        damping='0'
+                    />
+
+                    <geom
+                        type='mesh'
+                        mesh='left-roll'
+                        material="hip-roll"
+                        class="collision_1"
+                        mass="2.7882"
+                    />
+
+                    <!-- left hip pitch -->
+                    <body name='left-hip-pitch' pos='0 0 0' euler='0 0 0'>
+
+                        <joint
+                            name='left-hip-pitch'
+                            type='hinge'
+                            pos='0 0 0'
+                            axis='0 1 0'
+                            range='-100 45'
+                            damping='0'
+                        />
+
+                        <geom
+                            type='mesh'
+                            mesh='left-pitch'
+                            material="hip-pitch"
+                            class="collision_2"
+                            mass="6.027"
+                        />
+
+                        <!-- left knee pitch -->
+                        <body name='left-knee-pitch' pos='0 0 -0.44' euler='0 0 0'>
+
+                            <joint
+                                name='left-knee-pitch'
+                                type='hinge'
+                                pos='0 0 0'
+                                axis='0 1 0'
+                                range='-5 100'
+                                damping='0'
+                            />
+
+                            <geom
+                                type='mesh'
+                                mesh='left-knee-pitch'
+                                material="knee-pitch"
+                                class="collision_1"
+                                mass="4.1262"
+                            />
+
+                            <!-- left ankle roll -->
+                            <body name='left-ankle-roll' pos='0 0 -0.43' euler='0 0 0'>
+
+                                <joint
+                                    name='left-ankle-roll'
+                                    type='hinge'
+                                    pos='0 0 0'
+                                    axis='1 0 0'
+                                    range='-35 35'
+                                    damping='0'
+                                />
+
+                                <geom
+                                    type='mesh'
+                                    mesh='left-ankle-roll'
+                                    material="ankle-roll"
+                                    class="collision_2"
+                                    mass="0.37504"
+                                />
+
+                                <!-- left ankle pitch -->
+                                <body name='left-ankle-pitch' pos='0 0 0' euler='0 0 0'>
+
+                                    <joint
+                                        name='left-ankle-pitch'
+                                        type='hinge'
+                                        pos='0 0 0'
+                                        axis='0 1 0'
+                                        range='-30 30'
+                                        damping='0'
+                                    />
+
+                                    <geom
+                                        type='box'
+                                        material="ankle-pitch"
+                                        class="collision_1"
+                                        mass="3.0811"
+                                        size='0.1325 0.075 0.02' pos='0.0375 0 -0.1'
+                                    />
+
+                                    <site name='left-foot' type="box" size='0.1325 0.075 0.01' pos='0.0375 0 -0.12'/>
+                                </body>
+
+                            </body>
+
+                        </body>
+
+                    </body>
+
+                </body>
+
+            </body>
+
+        </body>
+
+    </worldbody>
+
+
+    <actuator>
+
+        <!-- right leg -->
+        <motor name='right-hip-yaw'   joint='right-hip-yaw'   />
+        <motor name='right-hip-roll'  joint='right-hip-roll'  />
+        <motor name='right-hip-pitch' joint='right-hip-pitch' />
+        <motor name='right-knee-pitch' joint='right-knee-pitch' />
+        <motor name='right-ankle-roll' joint='right-ankle-roll' />
+        <motor name='right-ankle-pitch' joint='right-ankle-pitch' />
+
+        <!-- left leg -->
+        <motor name='left-hip-yaw'   joint='left-hip-yaw'   />
+        <motor name='left-hip-roll'  joint='left-hip-roll'  />
+        <motor name='left-hip-pitch' joint='left-hip-pitch' />
+        <motor name='left-knee-pitch' joint='left-knee-pitch' />
+        <motor name='left-ankle-roll' joint='left-ankle-roll' />
+        <motor name='left-ankle-pitch' joint='left-ankle-pitch' />
+
+    </actuator>
+
+    <sensor>
+        <touch name='touch_right_foot' site='right-foot'/>
+        <touch name='touch_left_foot' site='left-foot'/>
+    </sensor>
+
+</mujoco>

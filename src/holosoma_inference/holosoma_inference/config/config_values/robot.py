@@ -260,7 +260,7 @@ star_18dof = RobotConfig(
     robot="star",
 
     # SDK Configuration
-    sdk_type="ros2",  # Using ros2 for simulation-only robot
+    sdk_type="booster",  # Using ros2 for simulation-only robot
     motor_type="serial",
     message_type="HG",
     use_sensor=False,

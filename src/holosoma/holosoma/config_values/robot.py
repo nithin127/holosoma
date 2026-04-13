@@ -1367,7 +1367,265 @@ star_18dof = RobotConfig(
         fix_base_link=False,
     ),
     bridge=RobotBridgeConfig(
-        sdk_type="ros2",
+        sdk_type="booster",
+        motor_type="serial",
+    ),
+)
+
+brs_v1 = RobotConfig(
+    num_bodies=13,
+    dof_obs_size=12,
+    actions_dim=12,
+    policy_obs_dim=-1,
+    critic_obs_dim=-1,
+    algo_obs_dim_dict={},
+    key_bodies=["left_ankle_pitch", "right_ankle_pitch"],
+    num_feet=2,
+    foot_body_name="ankle_pitch",
+    foot_height_name="ankle_pitch",
+    knee_name="knee_pitch",
+    torso_name="torso",
+    dof_names=[
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee_pitch",
+        "left_ankle_roll",
+        "left_ankle_pitch",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee_pitch",
+        "right_ankle_roll",
+        "right_ankle_pitch",
+    ],
+    upper_dof_names=[],
+    upper_left_arm_dof_names=[],
+    upper_right_arm_dof_names=[],
+    lower_dof_names=[
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee_pitch",
+        "left_ankle_roll",
+        "left_ankle_pitch",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee_pitch",
+        "right_ankle_roll",
+        "right_ankle_pitch",
+    ],
+    has_torso=True,
+    has_upper_body_dof=False,
+    left_ankle_dof_names=["left_ankle_roll", "left_ankle_pitch"],
+    right_ankle_dof_names=["right_ankle_roll", "right_ankle_pitch"],
+    knee_dof_names=["left_knee_pitch", "right_knee_pitch"],
+    hips_dof_names=[
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+    ],
+    dof_pos_lower_limit_list=[
+        -0.4363,  # left_hip_yaw:   -25 deg
+        -0.4363,  # left_hip_roll:  -25 deg
+        -1.7453,  # left_hip_pitch: -100 deg
+        -0.0873,  # left_knee_pitch: -5 deg
+        -0.6109,  # left_ankle_roll: -35 deg
+        -0.5236,  # left_ankle_pitch: -30 deg
+        -0.4363,  # right_hip_yaw:   -25 deg
+        -0.4363,  # right_hip_roll:  -25 deg
+        -1.9199,  # right_hip_pitch: -110 deg
+        -0.0873,  # right_knee_pitch: -5 deg
+        -0.6109,  # right_ankle_roll: -35 deg
+        -0.5236,  # right_ankle_pitch: -30 deg
+    ],
+    dof_pos_upper_limit_list=[
+        0.4363,   # left_hip_yaw:   25 deg
+        0.4363,   # left_hip_roll:  25 deg
+        0.7854,   # left_hip_pitch: 45 deg
+        1.7453,   # left_knee_pitch: 100 deg
+        0.6109,   # left_ankle_roll: 35 deg
+        0.5236,   # left_ankle_pitch: 30 deg
+        0.4363,   # right_hip_yaw:   25 deg
+        0.4363,   # right_hip_roll:  25 deg
+        0.7854,   # right_hip_pitch: 45 deg
+        1.7453,   # right_knee_pitch: 100 deg
+        0.6109,   # right_ankle_roll: 35 deg
+        0.5236,   # right_ankle_pitch: 30 deg
+    ],
+    dof_vel_limit_list=[
+        32.0,  # left_hip_yaw
+        20.0,  # left_hip_roll
+        20.0,  # left_hip_pitch
+        20.0,  # left_knee_pitch
+        37.0,  # left_ankle_roll
+        37.0,  # left_ankle_pitch
+        32.0,  # right_hip_yaw
+        20.0,  # right_hip_roll
+        20.0,  # right_hip_pitch
+        20.0,  # right_knee_pitch
+        37.0,  # right_ankle_roll
+        37.0,  # right_ankle_pitch
+    ],
+    dof_effort_limit_list=[
+        120.0,  # left_hip_yaw
+        120.0,  # left_hip_roll
+        120.0,  # left_hip_pitch
+        120.0,  # left_knee_pitch
+        120.0,  # left_ankle_roll
+        120.0,  # left_ankle_pitch
+        120.0,  # right_hip_yaw
+        120.0,  # right_hip_roll
+        120.0,  # right_hip_pitch
+        120.0,  # right_knee_pitch
+        120.0,  # right_ankle_roll
+        120.0,  # right_ankle_pitch
+    ],
+    dof_armature_list=[
+        0.01,   # left_hip_yaw
+        0.01,   # left_hip_roll
+        0.01,   # left_hip_pitch
+        0.01,   # left_knee_pitch
+        0.007,  # left_ankle_roll
+        0.007,  # left_ankle_pitch
+        0.01,   # right_hip_yaw
+        0.01,   # right_hip_roll
+        0.01,   # right_hip_pitch
+        0.01,   # right_knee_pitch
+        0.007,  # right_ankle_roll
+        0.007,  # right_ankle_pitch
+    ],
+    dof_joint_friction_list=[
+        0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+        0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+    ],
+    body_names=[
+        "torso",
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee_pitch",
+        "left_ankle_roll",
+        "left_ankle_pitch",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee_pitch",
+        "right_ankle_roll",
+        "right_ankle_pitch",
+    ],
+    terminate_after_contacts_on=["torso"],
+    penalize_contacts_on=["torso"],
+    init_state=RobotInitState(
+        pos=[0.0, 0.0, 1.15],
+        rot=[0.0, 0.0, 0.0, 1.0],
+        lin_vel=[0.0, 0.0, 0.0],
+        ang_vel=[0.0, 0.0, 0.0],
+        default_joint_angles={
+            "left_hip_yaw": 0.0,
+            "left_hip_roll": 0.0,
+            "left_hip_pitch": -0.3,
+            "left_knee_pitch": 0.6,
+            "left_ankle_roll": 0.0,
+            "left_ankle_pitch": -0.3,
+            "right_hip_yaw": 0.0,
+            "right_hip_roll": 0.0,
+            "right_hip_pitch": -0.3,
+            "right_knee_pitch": 0.6,
+            "right_ankle_roll": 0.0,
+            "right_ankle_pitch": -0.3,
+        },
+    ),
+    randomize_link_body_names=[
+        "torso",
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_hip_pitch",
+        "left_knee_pitch",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_hip_pitch",
+        "right_knee_pitch",
+    ],
+    waist_dof_names=[],
+    waist_yaw_dof_name=None,
+    waist_roll_dof_name=None,
+    waist_pitch_dof_name=None,
+    arm_dof_names=[],
+    left_arm_dof_names=[],
+    right_arm_dof_names=[],
+    symmetry_joint_names={
+        "left_hip_yaw": "right_hip_yaw",
+        "left_hip_roll": "right_hip_roll",
+        "left_hip_pitch": "right_hip_pitch",
+        "left_knee_pitch": "right_knee_pitch",
+        "left_ankle_roll": "right_ankle_roll",
+        "left_ankle_pitch": "right_ankle_pitch",
+        "right_hip_yaw": "left_hip_yaw",
+        "right_hip_roll": "left_hip_roll",
+        "right_hip_pitch": "left_hip_pitch",
+        "right_knee_pitch": "left_knee_pitch",
+        "right_ankle_roll": "left_ankle_roll",
+        "right_ankle_pitch": "left_ankle_pitch",
+    },
+    flip_sign_joint_names=[
+        "left_hip_yaw",
+        "left_hip_roll",
+        "left_ankle_roll",
+        "right_hip_yaw",
+        "right_hip_roll",
+        "right_ankle_roll",
+    ],
+    apply_dof_armature_in_isaacgym=True,
+    contact_pairs_multiplier=8,
+    control=RobotControlConfig(
+        control_type="P",
+        stiffness={
+            "hip_yaw": 40.0,
+            "hip_roll": 100.0,
+            "hip_pitch": 40.0,
+            "knee_pitch": 100.0,
+            "ankle_roll": 30.0,
+            "ankle_pitch": 30.0,
+        },
+        damping={
+            "hip_yaw": 2.5,
+            "hip_roll": 6.0,
+            "hip_pitch": 2.5,
+            "knee_pitch": 6.0,
+            "ankle_roll": 2.0,
+            "ankle_pitch": 2.0,
+        },
+        action_scale=0.25,
+        action_clip_value=100.0,
+        clip_actions=True,
+        clip_torques=True,
+    ),
+    asset=RobotAssetConfig(
+        asset_root="@holosoma/data/robots",
+        collapse_fixed_joints=True,
+        replace_cylinder_with_capsule=True,
+        flip_visual_attachments=False,
+        armature=0.001,
+        thickness=0.01,
+        max_angular_velocity=1000.0,
+        max_linear_velocity=1000.0,
+        angular_damping=0.0,
+        linear_damping=0.0,
+        urdf_file="brs/brs_v1.urdf",
+        usd_file=None,
+        xml_file="brs/brs_v1.xml",
+        robot_type="brs_v1",
+        enable_self_collisions=False,
+        default_dof_drive_mode=3,
+        fix_base_link=False,
+    ),
+    bridge=RobotBridgeConfig(
+        sdk_type="booster",
         motor_type="serial",
     ),
 )
@@ -1377,4 +1635,5 @@ DEFAULTS = {
     "t1_29dof_waist_wrist": t1_29dof_waist_wrist,
     "g1_29dof_w_object": g1_29dof_w_object,
     "star_18dof": star_18dof,
+    "brs_v1": brs_v1,
 }
